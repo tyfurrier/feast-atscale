@@ -32,9 +32,9 @@ except ImportError:
     from distutils.command.build_py import build_py
     from distutils.core import setup
 
-NAME = "feast"
+NAME = "feast-atscale"
 DESCRIPTION = "Python SDK for Feast"
-URL = "https://github.com/feast-dev/feast"
+URL = "https://github.com/tyfurrier/feast-atscale.git"
 AUTHOR = "Feast"
 REQUIRES_PYTHON = ">=3.7.0"
 
@@ -166,11 +166,15 @@ TAG_REGEX = re.compile(
     r"^(?:[\/\w-]+)?(?P<version>[vV]?\d+(?:\.\d+){0,2}[^\+]*)(?:\+.*)?$"
 )
 
+
+def local_scheme(version):
+    return ""
+
 # Only set use_scm_version if git executable exists (setting this variable causes pip to use git under the hood)
 if shutil.which("git"):
-    use_scm_version = {"root": "../..", "relative_to": __file__, "tag_regex": TAG_REGEX}
+    use_scm_version = {"root": "../..", "relative_to": __file__, "tag_regex": TAG_REGEX, "local_scheme": local_scheme}  #delete local_scheme
 else:
-    use_scm_version = None
+    use_scm_version = {"local_scheme": local_scheme} #change to None
 
 PROTO_SUBDIRS = ["core", "serving", "types", "storage"]
 
@@ -305,9 +309,9 @@ class BuildGoProtosCommand(Command):
                 self.go_protoc
                 + ["-I", self.proto_folder,
                    "--go_out", self.go_folder,
-                   "--go_opt=module=github.com/feast-dev/feast/go/protos",
+                   "--go_opt=module=github.com/tyfurrier/feast-atscale/go/protos",
                    "--go-grpc_out", self.go_folder,
-                   "--go-grpc_opt=module=github.com/feast-dev/feast/go/protos"]
+                   "--go-grpc_opt=module=github.com/tyfurrier/feast-atscale/go/protos"]
                 + proto_files,
                 env={
                     "PATH": self.path_val
@@ -325,7 +329,7 @@ class BuildGoProtosCommand(Command):
                                "-x",
                                "-o",
                                f"{repo_root}/sdk/python/feast/binaries/server",
-                               f"github.com/feast-dev/feast/go/cmd/server"])
+                               f"github.com/tyfurrier/feast-atscale/go/cmd/server"])
 
     def run(self):
         go_dir = Path(repo_root) / "go" / "protos"
