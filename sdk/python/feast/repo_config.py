@@ -43,6 +43,7 @@ OFFLINE_STORE_CLASS_FOR_TYPE = {
     "redshift": "feast.infra.offline_stores.redshift.RedshiftOfflineStore",
     "snowflake.offline": "feast.infra.offline_stores.snowflake.SnowflakeOfflineStore",
     "spark": "feast.infra.offline_stores.contrib.spark_offline_store.spark.SparkOfflineStore",
+    "atscale.offline": "feast.infra.offline_stores.atscale_offline_store.AtScaleOfflineStore",
 }
 
 FEATURE_SERVER_CONFIG_CLASS_FOR_TYPE = {

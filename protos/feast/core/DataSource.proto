@@ -26,7 +26,7 @@ import "feast/core/DataFormat.proto";
 import "feast/types/Value.proto";
 
 // Defines a Data Source that can be used source Feature data
-// Next available id: 23
+// Next available id: 25
 message DataSource {
   // Field indexes should *not* be reused. Not sure if fields 6-10 were used previously or not,
   // but they are going to be reserved for backwards compatibility.
@@ -45,6 +45,7 @@ message DataSource {
     CUSTOM_SOURCE = 6;
     REQUEST_SOURCE = 7;
     PUSH_SOURCE = 9;
+    BATCH_ATSCALE = 10;
   }
 
   // Unique name of data source within the project
@@ -164,6 +165,7 @@ message DataSource {
     bytes configuration = 1;
   }
 
+
   // Defines options for DataSource that sources features from request data
   message RequestDataOptions {
     reserved 1;
@@ -180,6 +182,15 @@ message DataSource {
     DataSource batch_source = 2;
   }
 
+  // Defines options for AtScaleSource that sources features from atscale api
+  message AtScaleOptions {
+    // String representation of the list of features, separated by ', '
+    string features = 1;
+
+    // AtScale and db table name
+    string table_ref = 2;
+  }
+
 
   // DataSource options.
   oneof options {
@@ -191,6 +202,7 @@ message DataSource {
     RequestDataOptions request_data_options = 18;
     CustomSourceOptions custom_options = 16;
     SnowflakeOptions snowflake_options = 19;
+    AtScaleOptions atscale_options = 23;
     PushOptions push_options = 22;
   }
 }

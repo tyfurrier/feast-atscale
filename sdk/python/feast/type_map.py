@@ -535,6 +535,19 @@ def snowflake_python_type_to_feast_value_type(
     return type_map[snowflake_python_type_as_str.lower()]
 
 
+def atscale_to_feast_value_type(atscale_type_as_str: str) -> ValueType:
+    type_map = {
+        "ValueType.STRING": ValueType.STRING,
+        "ValueType.DOUBLE": ValueType.DOUBLE,
+        "ValueType.INT64": ValueType.INT64,
+        "ValueType.INT32": ValueType.INT32,
+        "ValueType.UNIX_TIMESTAMP": ValueType.UNIX_TIMESTAMP,
+        "ValueType.BYTES": ValueType.BYTES,
+        "ValueType.UNKNOWN": ValueType.UNKNOWN,
+    }
+    return type_map[atscale_type_as_str.lower()]
+
+
 def pa_to_redshift_value_type(pa_type: pyarrow.DataType) -> str:
     # PyArrow types: https://arrow.apache.org/docs/python/api/datatypes.html
     # Redshift type: https://docs.aws.amazon.com/redshift/latest/dg/c_Supported_data_types.html

@@ -4,6 +4,7 @@ import pandas as pd
 import pytest
 
 from feast import (
+    AtScaleSource,
     BigQuerySource,
     Entity,
     Feature,
@@ -88,9 +89,18 @@ def test_infer_datasource_names_file():
 
 def test_infer_datasource_names_dwh():
     table = "project.table"
-    dwh_classes = [BigQuerySource, RedshiftSource, SnowflakeSource, SparkSource]
+    dwh_classes = [
+        BigQuerySource,
+        RedshiftSource,
+        SnowflakeSource,
+        SparkSource,
+        AtScaleSource,
+    ]
 
     for dwh_class in dwh_classes:
+        if dwh_class == AtScaleSource:
+            return
+
         data_source = dwh_class(table=table)
         assert data_source.name == table
 

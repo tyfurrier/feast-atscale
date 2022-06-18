@@ -2,13 +2,13 @@ import re
 from typing import List
 
 from feast import (
+    AtScaleSource,
     BigQuerySource,
     Entity,
     Feature,
     FileSource,
     RedshiftSource,
     SnowflakeSource,
-    AtScaleSource,
 )
 from feast.data_source import DataSource, RequestDataSource
 from feast.errors import RegistryInferenceFailure
