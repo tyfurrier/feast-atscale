@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import getpass
 import glob
 import os
 import pathlib
@@ -32,14 +33,14 @@ except ImportError:
     from distutils.command.build_py import build_py
     from distutils.core import setup
 
-NAME = "feast-atscale"
+NAME = "feast-atscalev2"
 DESCRIPTION = "Python SDK for Feast"
 URL = "https://github.com/tyfurrier/feast-atscale.git"
 AUTHOR = "Feast"
 REQUIRES_PYTHON = ">=3.7.0"
 
 REQUIRED = [
-    "Click>=7.*",
+    "Click<8.0", #todo: change back to any or fix bug from 8.1
     "colorama>=0.3.9",
     "dill==0.3.*",
     "fastavro>=1.1.0",
@@ -198,7 +199,7 @@ class BuildPythonProtosCommand(Command):
     def finalize_options(self):
         pass
 
-    def _generate_python_protos(self, path: str):
+    def _generate_python_protos(self, path):
         proto_files = glob.glob(os.path.join(self.proto_folder, path))
         Path(self.python_folder).mkdir(exist_ok=True)
         subprocess.check_call(
@@ -218,7 +219,7 @@ class BuildPythonProtosCommand(Command):
 
     def run(self):
         for sub_folder in self.sub_folders:
-            self._generate_python_protos(f"feast/{sub_folder}/*.proto")
+            self._generate_python_protos(path=f"feast/{sub_folder}/*.proto")
             # We need the __init__ files for each of the generated subdirs
             # so that they are regular packages, and don't need the `--namespace-packages` flags
             # when being typechecked using mypy. BUT, we need to exclude `types` because that clashes
